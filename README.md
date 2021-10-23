@@ -2,4 +2,6 @@
  login system build with MERN
  
  
- Currently  the only validated user is Nicolas, with password:1234
+ Currently  the only validated users are 
+ user: nicolas  password:1234
+ user: nikito   password:jopnet
