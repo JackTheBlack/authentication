@@ -13,7 +13,6 @@ import cookie from "js-cookie";
 //require("dotenv").config();
 
 export default function LogForm() {
-  const user = useSelector((store) => store.logReducer.user);
   const dispatch = useDispatch();
   const [errorLog, setErrorLog] = useState(false);
   const router = useRouter();

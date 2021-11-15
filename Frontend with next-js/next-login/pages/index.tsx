@@ -1,11 +1,10 @@
 import Head from "next/head";
 import Image from "next/image";
 import Timeline from "./timeline";
-import Login from "./login";
+import LogForm from "../components/logForm.tsx";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { Spin } from "antd";
 import "antd/dist/antd.css";
@@ -23,12 +22,9 @@ export const getServerSideProps = async (context) => {
 
 //@ts-check
 
-export default function Home() {
-  const count = useSelector((store) => store.counterReducer.count);
-  const log = useSelector((store) => store.logReducer.user);
-  const dispatch = useDispatch();
+export default function Home({ token }) {
   const router = useRouter();
-  const [user, setUser] = useState(null);
+
   const [photo, setPhoto] = useState(
     "data:image/jpeg;base64,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"
   );
@@ -37,8 +33,14 @@ export default function Home() {
   };
 
   const logOut = () => {
-    window.localStorage.removeItem("userJSON");
+    Cookies.remove("auth");
     router.push("/login");
+  };
+
+  var decoded = jwt.verify(token, "6ef0f8f9-ae42-47ba-9f8b-166d7eedb456");
+  const user = {
+    userName: decoded.username,
+    email: decoded.email,
   };
 
   useEffect(() => {
@@ -55,28 +57,14 @@ export default function Home() {
       }
     }
     const userJSON = window.localStorage.getItem("userJSON");
-    if (!userJSON) redirect("/login");
+    console.log("fdfdfd" + userJSON);
   });
-
-  useEffect(() => {
-    const loginEndPoitn = process.env.LOGIN_ENDPOINT;
-    console.log(process.env.ENDPOINT);
-    console.log("el endpoint es " + loginEndPoitn);
-
-    const userJSON = window.localStorage.getItem("userJSON");
-    if (!userJSON) {
-      redirect("/login");
-    } else {
-      setUser(JSON.parse(userJSON));
-      console.log(userJSON);
-    }
-  }, []);
 
   return (
     <>
-      {user === null ? (
+      {decoded === null ? (
         <div>
-          <Spin />
+          <LogForm />
         </div>
       ) : (
         <div className={styles.container}>
